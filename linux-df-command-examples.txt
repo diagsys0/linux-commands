@@ -1,0 +1,109 @@
+https://www.thegeekstuff.com/2012/05/df-examples
+Used Space On Disk
+
+df -h
+To get the amount of free space on the disk as a single value in kB you can use this:
+$ df -k /tmp | tail -1 | awk '{print $4}'
+or in MB:
+$ df -BM /tmp | tail -1 | awk '{print $4}'
+Used Space Of Current Directory
+$ du -sh /*
+
+Full Disk! A few things you can do…
+Remove old compressed log files from the system:
+$ sudo rm -v /var/log/*.gz
+Clean-Up Installation Packages  .To remove partial packages, clean the cache, remove unused dependencies use:
+$ sudo apt-get autoclean
+$ sudo apt-get clean
+$ sudo apt-get autoremove
+
+$ df
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/sda1            132239776   6210884 119311504   5% /
+tmpfs                  4021876         0   4021876   0% /dev/shm
+/dev/sdb2             30969600    117740  29278696   1% /home/oracle
+/dev/sdc1            576310180     71232 546964104   1% /home/data
+
+1. Display Information of all the File Systems
+If the disk usage of all the file systems is required then use ‘-a’ option:
+
+$ df -a
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/sda1            132239776   6210892 119311496   5% /
+proc                         0         0         0   -  /proc
+sysfs                        0         0         0   -  /sys
+devpts                       0         0         0   -  /dev/pts
+tmpfs                  4021876         0   4021876   0% /dev/shm
+none                         0         0         0   -  /proc/sys/fs/binfmt_misc
+/dev/sdb2             30969600    117740  29278696   1% /home/oracle
+/dev/sdc1            576310180     71232 546964104   1% /home/data
+
+2. Specify the Memory Block Size
+If you see the output in point 1 above, the second column gives the memory of file system in memory blocks of 1k. df command provides an option through which we can change the size of memory block in the output. Use option -B for this:
+
+$ df -B 100
+Filesystem         100B-blocks      Used Available Use% Mounted on
+/dev/sda1            1354135307  63599535 1221749720   5% /
+tmpfs                 41184011         0  41184011   0% /dev/shm
+/dev/sdb2            317128704   1205658 299813848   1% /home/oracle
+/dev/sdc1            5901416244    729416 5600912425   1% /home/data
+
+3. Print Human Readable Sizes
+We are used to reading the memory in terms of gigabytes, megabytes, etc as its easy to read and remember. df command also provides an option ‘-h’ to print the memory statistics in human readable format.
+Option -h stands for “human” readable format. As shown in the output below, G is used for gigabytes and M is used for megabytes.
+
+$ df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda1             127G  6.0G  114G   5% /
+tmpfs                 3.9G     0  3.9G   0% /dev/shm
+/dev/sdb2              30G  115M   28G   1% /home/oracle
+/dev/sdc1             550G   70M  522G   1% /home/data
+
+4. Display Grand Total in the Output
+Till now we have seen that only disk usage statistics of individual file systems is produced. If we want to display a grand total of every column then we can use the ‘–total’ flag. Here is an example:
+
+$ df -h --total
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/sda1             127G  6.0G  114G   5% /
+tmpfs                 3.9G     0  3.9G   0% /dev/shm
+/dev/sdb2              30G  115M   28G   1% /home/oracle
+/dev/sdc1             550G   70M  522G   1% /home/data
+total                 710G  6.2G  668G   1%
+
+5. List Inodes (Instead of Block Usage)
+Till now we have seen that df prints the second column as total memory blocks. If information in terms of inode is desired then df provides an option ‘-i’ for this.
+
+$ df -i
+Filesystem            Inodes   IUsed   IFree IUse% Mounted on
+/dev/sda1            8396800   65397 8331403    1% /
+tmpfs                1005469       1 1005468    1% /dev/shm
+/dev/sdb2            1966560    2517 1964043    1% /home/oracle
+/dev/sdc1            36593664      11 36593653    1% /home/data
+
+6. Print File System Type
+If you wish to print the type of file system in the output, use option ‘-T’.
+
+$ df -T
+Filesystem    Type   1K-blocks      Used Available Use% Mounted on
+/dev/sda1     ext4   132239776   6210892 119311496   5% /
+tmpfs        tmpfs     4021876         0   4021876   0% /dev/shm
+/dev/sdb2     ext2    30969600    117740  29278696   1% /home/oracle
+/dev/sdc1     ext2   576310180     71232 546964104   1% /home/data
+
+7. Include/Exclude Certain File System Type
+You can also display file systems that belongs to certain type. For example, the following command displays only ext2 file systems. types.
+
+$ df -t ext2
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/sdb2             30969600    117740  29278696   1% /home/oracle
+/dev/sdc1            576310180     71232 546964104   1% /home/data
+
+You can also display file systems that doesn’t belongs to certain type. For example, the following command displays all other file systems except ext2. This is exactly opposite to the above -t option.
+
+$ df -x ext2
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/sda1            132239776   6210896 119311492   5% /
+tmpfs                  4021876         0   4021876   0% /dev/shm
+
+$ df -hT
+$ df -k /tmp | tail -1 | awk '{print $4}'
