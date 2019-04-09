@@ -1,0 +1,280 @@
+https://www.thegeekstuff.com/2010/09/linux-fdisk/
+
+Linux fdisk Command Examples to Manage Hard Disk Partition
+
+Use fdisk -l to view all available partitions as shown below.
+
+# fdisk -l
+
+Disk /dev/sda: 80.0 GB, 80026361856 bytes
+255 heads, 63 sectors/track, 9729 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Disk identifier: 0xf6edf6ed
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1               1        1959    15735636    c  W95 FAT32 (LBA)
+/dev/sda2            1960        5283    26700030    f  W95 Ext'd (LBA)
+/dev/sda3            5284        6528    10000462+   7  HPFS/NTFS
+/dev/sda4            6529        9729    25712032+   c  W95 FAT32 (LBA)
+/dev/sda5   *        1960        2661     5638752   83  Linux
+/dev/sda6            2662        2904     1951866   83  Linux
+/dev/sda7            2905        3147     1951866   83  Linux
+/dev/sda8            3148        3264      939771   82  Linux swap / Solaris
+/dev/sda9            3265        5283    16217586    b  W95 FAT32
+
+The above will list partitions from all the connected hard disks. When you have more than one disk on the system, the partitions list are ordered by the device’s /dev name. For example, /dev/sda, /dev/sdb, /dev/sdc and so on.
+
+2. View Partitions of a Specific Hard Disk using fdisk -l /dev/sd{a}
+To view all partitions of the /dev/sda hard disk, do the following.
+
+# fdisk -l /dev/sda
+View all fdisk Commands Using fdisk Command m
+Use fdisk command m, to view all available fdisk commands as shown below.
+
+# fdisk  /dev/sda
+
+The number of cylinders for this disk is set to 9729.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)
+
+Command (m for help): m
+Command action
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+3. Delete a Hard Disk Partition Using fdisk Command d
+Let us assume that you like to combine several partitions (for example, /dev/sda6, /dev/sda7 and /dev/sda8) into a single disk partition. To do this, you should first delete all those individual partitions, as shown below.
+
+# fdisk /dev/sda                                                 
+
+The number of cylinders for this disk is set to 9729.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)                               
+
+Command (m for help): p
+
+Disk /dev/sda: 80.0 GB, 80026361856 bytes
+255 heads, 63 sectors/track, 9729 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Disk identifier: 0xf6edf6ed
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1               1        1959    15735636    c  W95 FAT32 (LBA)
+/dev/sda2            1960        5283    26700030    f  W95 Ext'd (LBA)
+/dev/sda3            5284        6528    10000462+   7  HPFS/NTFS
+/dev/sda4            6529        9729    25712032+   c  W95 FAT32 (LBA)
+/dev/sda5   *        1960        2661     5638752   83  Linux
+/dev/sda6            2662        2904     1951866   83  Linux
+/dev/sda7            2905        3147     1951866   83  Linux
+/dev/sda8            3148        3264      939771   82  Linux swap / Solaris
+/dev/sda9            3265        5283    16217586    b  W95 FAT32
+
+Command (m for help): d
+Partition number (1-9): 8
+
+Command (m for help): d
+Partition number (1-8): 7
+
+Command (m for help): d
+Partition number (1-7): 6
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+4. Create a New Disk Partition with Specific Size Using fdisk Command n
+Once you’ve deleted all the existing partitions, you can create a new partition using all available space as shown below.
+
+# fdisk  /dev/sda
+
+The number of cylinders for this disk is set to 9729.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)
+
+Command (m for help): n
+First cylinder (2662-5283, default 2662):
+Using default value 2662
+Last cylinder, +cylinders or +size{K,M,G} (2662-3264, default 3264):
+Using default value 3264
+In the above example, fdisk n command is used to create new partition with the specific size. While creating a new partition, it expects following two inputs.
+
+Starting cylinder number of the partition to be create (First cylinder).
+Size of the partition (or) the last cylinder number (Last cylinder, +cylinders or +size ).
+Please keep in mind that you should issue the fdisk write command (w) after any modifications.
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+After the partition is created, format it using the mkfs command as shown below.
+
+# mkfs.ext3 /dev/sda7
+5. View the Size of an existing Partition Using fdisk -s
+As shown below, fdisk -s displays the size of the partition in blocks.
+
+# fdisk -s /dev/sda7
+4843566
+The above output corresponds to about 4900MB.
+
+6. Toggle the Boot Flag of a Partition Using fdisk Command a
+Fdisk command displays the boot flag of each partition. When you want to disable or enable the boot flag on the corresponding partition, do the following.
+
+If you don’t know why are you are doing this, you’ll mess-up your system.
+
+# fdisk /dev/sda
+
+The number of cylinders for this disk is set to 9729.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)                               
+
+Command (m for help): p
+
+Disk /dev/sda: 80.0 GB, 80026361856 bytes
+255 heads, 63 sectors/track, 9729 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Disk identifier: 0xf6edf6ed
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1               1        1959    15735636    c  W95 FAT32 (LBA)
+/dev/sda2            1960        5283    26700030    f  W95 Ext'd (LBA)
+/dev/sda3            5284        6528    10000462+   7  HPFS/NTFS
+/dev/sda4            6529        9729    25712032+   c  W95 FAT32 (LBA)
+/dev/sda5   *        1960        2661     5638752   83  Linux
+/dev/sda6            3265        5283    16217586    b  W95 FAT32
+/dev/sda7            2662        3264     4843566   83  Linux
+
+Partition table entries are not in disk order
+
+Command (m for help): a
+Partition number (1-7): 5
+
+Command (m for help): p
+
+Disk /dev/sda: 80.0 GB, 80026361856 bytes
+255 heads, 63 sectors/track, 9729 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Disk identifier: 0xf6edf6ed
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1               1        1959    15735636    c  W95 FAT32 (LBA)
+/dev/sda2            1960        5283    26700030    f  W95 Ext'd (LBA)
+/dev/sda3            5284        6528    10000462+   7  HPFS/NTFS
+/dev/sda4            6529        9729    25712032+   c  W95 FAT32 (LBA)
+/dev/sda5            1960        2661     5638752   83  Linux
+/dev/sda6            3265        5283    16217586    b  W95 FAT32
+/dev/sda7            2662        3264     4843566   83  Linux
+
+Partition table entries are not in disk order
+
+Command (m for help):
+As seen above, the boot flag is disabled on the partition /dev/sda5.
+
+7. Fix Partition Table Order Using fdisk Expert Command f
+When you delete a logical partition, and recreate it again, you might see the “partition out of order” issue. i.e “Partition table entries are not in disk order” error message.
+
+For example, when you delete three logical partitions (sda6, sda7 and sda8), and create a new partition, you might expect the new partition name to be sda6. But, the system might’ve created the new partition as sda7. This is because, after the partitions are deleted, sda9 partition has been moved as sda6 and the free space is moved to the end.
+
+To fix this partition order issue, and assign sda6 to the newly created partition, execute the expert command f as shown below.
+
+ $ fdisk  /dev/sda
+
+The number of cylinders for this disk is set to 9729.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)                               
+
+Command (m for help): p
+
+Disk /dev/sda: 80.0 GB, 80026361856 bytes
+255 heads, 63 sectors/track, 9729 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Disk identifier: 0xf6edf6ed                     
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1               1        1959    15735636    c  W95 FAT32 (LBA)
+/dev/sda2            1960        5283    26700030    f  W95 Ext'd (LBA)
+/dev/sda3            5284        6528    10000462+   7  HPFS/NTFS
+/dev/sda4            6529        9729    25712032+   c  W95 FAT32 (LBA)
+/dev/sda5   *        1960        2661     5638752   83  Linux
+/dev/sda6            3265        5283    16217586    b  W95 FAT32
+/dev/sda7            2662        3264     4843566   83  Linux          
+
+Partition table entries are not in disk order
+
+Command (m for help): x
+
+Expert command (m for help): f
+Done.
+
+Expert command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+Once the partition table order is fixed, you’ll not get the “Partition table entries are not in disk order” error message anymore.
+
+# fdisk -l
+
+Disk /dev/sda: 80.0 GB, 80026361856 bytes
+255 heads, 63 sectors/track, 9729 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Disk identifier: 0xf6edf6ed
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1               1        1959    15735636    c  W95 FAT32 (LBA)
+/dev/sda2            1960        5283    26700030    f  W95 Ext'd (LBA)
+/dev/sda3            5284        6528    10000462+   7  HPFS/NTFS
+/dev/sda4            6529        9729    25712032+   c  W95 FAT32 (LBA)
+/dev/sda5   *        1960        2661     5638752   83  Linux
+/dev/sda6            2662        3264     4843566   83  Linux
+/dev/sda7            3265        5283    16217586    b  W95 FAT32
+
+goog: most used linux commands : examples
+linux overview partitions
+	fdisk gdisk parted gparted
+
+https://mike632t.wordpress.com/2014/02/10/resizing-partitions/
+
+I would recommend looking at 
+	mount and df -hT and swapon -s as a next step, because they will at least confirm the FS type on every mounted partition. 
