@@ -1,0 +1,20 @@
+
+http://raspberry-projects.com/pi/programming-in-c/boost-c-libraries/string-functions
+http://raspberry-projects.com/pi/pi-operating-systems/raspbian/troubleshooting/expand-filesystem-issues
+http://raspberry-projects.com/pi/programming-in-c/boost-c-libraries/installing-and-using-boost
+
+$ sudo apt-cache search libboost
+...
+libboost1.62-all-dev - Boost C++ Libraries development files (ALL)
+libboost1.62-dev - Boost C++ Libraries development files
+libboost1.62-doc - Boost.org libraries documentation
+libboost1.62-tools-dev - Boost C++ Libraries development tools
+
+$ sudo apt-get install libboost1.62-*
+or
+$ sudo apt-get install libboost1.50-all
+
+
+---
+configuration Rpi
+http://raspberry-projects.com/pi/software_utilities/wifi-access-point
